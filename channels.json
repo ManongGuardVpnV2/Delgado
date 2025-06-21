@@ -1,0 +1,356 @@
+[
+  {
+    "name": "TV5",
+    "logo": "https://logowik.com/content/uploads/images/tv5-philippines1731625551.logowik.com.webp",
+    "manifestUri": "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_hd.mpd",
+    "clearKey": { "2615129ef2c846a9bbd43a641c7303ef": "07c7f996b1734ea288641a68e1cfdc4d" }
+  },
+  {
+    "name": "A2Z",
+    "logo": "https://i.ebayimg.com/images/g/3EoAAOSwuLxjH4JN/s-l300.png",
+    "manifestUri": "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_a2z.mpd",
+    "clearKey": { "f703e4c8ec9041eeb5028ab4248fa094": "c22f2162e176eee6273a5d0b68d19530" }
+  },
+  {
+        "name": "Kapamilya Channel",
+        "logo": "http://assets.rappler.com/3E8CFD536445453C9575551922F68F49/img/FAB93EF5D0DF4FD6BE017B76302A75BD/Kapamilya_Channel_logo.jpg",
+        "manifestUri": "https://cdn-ue1-prod.tsv2.amagi.tv/linear/amg01006-abs-cbn-kapcha-dash-abscbnono/index.mpd",
+        "clearKey": { "bd17afb5dc9648a39be79ee3634dd4b8": "3ecf305d54a7729299b93a3d69c02ea5" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse4.mm.bing.net/th?id=OIP.4Eq7oR3Nbo7IQL0ZHckSTAHaH7&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_buko_sd.mpd",
+        "clearKey": { "d273c085f2ab4a248e7bfc375229007d": "7932354c3a84f7fc1b80efa6bcea0615" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse4.mm.bing.net/th?id=OIP.0Rw8bhz8AeYYd_yd_cOV6gAAAA&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/pbo_sd.mpd",
+        "clearKey": { "dcbdaaa6662d4188bdf97f9f0ca5e830": "31e752b441bd2972f2b98a4b1bc1c7a1" }
+      },
+       {
+        "name": "",
+        "logo" : "https://vignette1.wikia.nocookie.net/logopedia/images/3/3e/Sari-Sari_alternate_Logo.PNG/revision/latest?cb=20160619031101",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_sari_sari_sd.mpd",
+        "clearKey": { "0a7ab3612f434335aa6e895016d8cd2d": "b21654621230ae21714a5cab52daeb9d" }
+      },
+       {
+        "name": "",
+        "logo": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/4b1ceee5-9458-4434-80bc-fc5d83a2ea88/ddxoqt2-0499f070-69c0-4af5-b3a6-ba8532fd6ccd.png/v1/fill/w_847,h_944,strp/viva_cinema__1996__logo_remake__wip_3__by_unitedworldmedia_ddxoqt2-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTQyNyIsInBhdGgiOiJcL2ZcLzRiMWNlZWU1LTk0NTgtNDQzNC04MGJjLWZjNWQ4M2EyZWE4OFwvZGR4b3F0Mi0wNDk5ZjA3MC02OWMwLTRhZjUtYjNhNi1iYTg1MzJmZDZjY2QucG5nIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.kXZFXI_Yf2LBUA7M-n1aFVbnCVYTzXTGXA3uyS-zdnw",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/viva_sd.mpd",
+        "clearKey": { "07aa813bf2c147748046edd930f7736e": "3bd6688b8b44e96201e753224adfc8fb" }
+      },
+      {
+        "name": "",
+        "logo": "https://lh3.googleusercontent.com/LplckMskM-6P6KvdP9yL_WT28nJIAw10gE3D7rkee5ZCmbe7wIKuv_CYOMi2guHRaPI=h1024-no-tmp_latest_tagalog_movies_apk.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd",
+        "clearKey": { "f703e4c8ec9041eeb5028ab4248fa094": "c22f2162e176eee6273a5d0b68d19530" }
+      },
+      {
+        "name": "",
+        "logo": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2077a187-7b99-4db1-b092-ca4f7f1fc316/dh19scr-dcc2ff28-42f7-4ce4-be80-9646c5df9fef.jpg/v1/fill/w_894,h_894,q_70,strp/animax_logo_tvokids_letters_by_danieltubeisback_dh19scr-pre.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAwMCIsInBhdGgiOiJcL2ZcLzIwNzdhMTg3LTdiOTktNGRiMS1iMDkyLWNhNGY3ZjFmYzMxNlwvZGgxOXNjci1kY2MyZmYyOC00MmY3LTRjZTQtYmU4MC05NjQ2YzVkZjlmZWYuanBnIiwid2lkdGgiOiI8PTEwMDAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.M_Mnwk9ah6X2FrrRTeOY4_Apek2m32Vss6DrL9Bl9RY",
+        "manifestUri": "https://tglmp01.akamaized.net/out/v1/de55fad9216e4fe7ad8d2eed456ba1ec/manifest.mpd",
+        "clearKey": { "edf1a715de9748638dd2fad75a419af2": "2f5a3199b26e9b693ae881af7ff864cf" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.RjFzlLGcI2goN6SD7WemUQHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd",
+        "clearKey": { "a2d1f552ff9541558b3296b5a932136b": "cdd48fa884dc0c3a3f85aeebca13d444" }
+      },
+      {
+        "name": "",
+        "logo": "https://th.bing.com/th/id/OIP.ALWJ2WbVHYo_264G5VnzUAHaED?rs=1&pid=ImgDetMain",
+        "manifestUri": "https://atemecdnbalancer-voe.sysln.id/live/eds/CartoonitoHD/mpd/CartoonitoHD.mpd",
+        "clearKey": { "955574ee2b674f0fbbad818fb384c233": "51d2893619bdd062fb4c0cdaafefbf27" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.OPHawTf7eMI8cgvHJJ9FtgHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_dreamworktag.mpd",
+        "clearKey": { "564b3b1c781043c19242c66e348699c5": "d3ad27d7fe1f14fb1a2cd5688549fbab" }
+      },
+      {
+        "name": "",
+        "logo": "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2a46d7d8-d8e1-497a-9b13-3e452d07e286/dfw3orh-67f82fec-c5e2-420f-a598-1193a9c35e3c.png/v1/fill/w_1022,h_782/nickelodeon___summer_2023_logo_concept_by_jpreckless2444_dfw3orh-pre.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzgzIiwicGF0aCI6IlwvZlwvMmE0NmQ3ZDgtZDhlMS00OTdhLTliMTMtM2U0NTJkMDdlMjg2XC9kZnczb3JoLTY3ZjgyZmVjLWM1ZTItNDIwZi1hNTk4LTExOTNhOWMzNWUzYy5wbmciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.JrOvVlsk9GLGKsd-4ffetCe4Kn6AmLKtDGVSamvR7eo",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_nickelodeon.mpd",
+        "clearKey": { "9ce58f37576b416381b6514a809bfd8b": "f0fbb758cdeeaddfa3eae538856b4d72" }
+      },
+      {
+        "name": "",
+        "logo": "https://2.bp.blogspot.com/-sZZITfpQ9_M/WwM9awajXQI/AAAAAAAA6No/t8wEGZzsxKEs4-Gn8i1b5vZoNjKhnh66ACLcBGAs/s1600/nick-jr-logo-2018-rebrand-brand-refresh-nickelodeon-preschool-usa.png",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_nickjr.mpd",
+        "clearKey": { "bab5c11178b646749fbae87962bf5113": "0ac679aad3b9d619ac39ad634ec76bc8" }
+      },
+      {
+        "name": "",
+        "logo": "https://wallpapers.com/images/hd/hbo-background-02ivg2v0l3ilbkmr.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbohd.mpd",
+        "clearKey": { "d47ebabf7a21430b83a8c4b82d9ef6b1": "54c213b2b5f885f1e0290ee4131d425b" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse1.mm.bing.net/th?id=OIF.ogUl9AM%2b119MzIBeaoJwcQ&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_hbofam.mpd",
+        "clearKey": { "872910c843294319800d85f9a0940607": "f79fd895b79c590708cf5e8b5c6263be" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.PNcaEsDsK8CX97tCTst7_gHaDw&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_hbosign.mpd",
+        "clearKey": { "a06ca6c275744151895762e0346380f5": "559da1b63eec77b5a942018f14d3f56f" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse4.mm.bing.net/th?id=OIP.7cKIi6OvC66lmK484NdbUQAAAA&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hbohits.mpd",
+        "clearKey": { "b04ae8017b5b4601a5a0c9060f6d5b7d": "a8795f3bdb8a4778b7e888ee484cc7a1" }
+      },
+      {
+        "name": "",
+        "logo": "https://yt3.ggpht.com/-vrDJV05mY6o/AAAAAAAAAAI/AAAAAAAAAAA/wFLZ0bLe0Ls/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_cinemax.mpd",
+        "clearKey": { "b207c44332844523a3a3b0469e5652d7": "fe71aea346db08f8c6fbf0592209f955" }
+      },
+      {
+        "name": "",
+        "logo": "https://cms.cignal.tv/Upload/Images/Hits%20Now.png",
+        "manifestUri": "https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_hitsnow.mpd",
+        "clearKey": { "14439a1b7afc4527bb0ebc51cf11cbc1": "92b0287c7042f271b266cc11ab7541f1" }
+      },
+      {
+        "name": "",
+        "logo": "https://www.hitsnow.tv/assets/hits-logo-color.png",
+        "manifestUri": "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/hits_hd1.mpd",
+        "clearKey": { "dac605bc197e442c93f4f08595a95100": "975e27ffc1b7949721ee3ccb4b7fd3e5" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.UjQ-RKl2UFieNoyS0tD64wHaEf&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_hitsmovies.mpd",
+        "clearKey": { "f56b57b32d7e4b2cb21748c0b56761a7": "3df06a89aa01b32655a77d93e09e266f" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.DfPPVftOsA6O2k_CVUj7WQHaEn&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_axn_sd.mpd",
+        "clearKey": { "fd5d928f5d974ca4983f6e9295dfe410": "3aaa001ddc142fedbb9d5557be43792f" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse1.mm.bing.net/th?id=OIP.n09V2ebeV_kzhdJuXLUbKgHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_warnertvhd.mpd",
+        "clearKey": { "4503cf86bca3494ab95a77ed913619a0": "afc9c8f627fb3fb255dee8e3b0fe1d71" }
+      },
+      {
+        "name": "",
+        "logo": "https://dcassetcdn.com/design_img/1784938/517402/517402_9622699_1784938_89e62af3_image.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_thrill_sd.mpd",
+        "clearKey": { "928114ffb2394d14b5585258f70ed183": "a82edc340bc73447bac16cdfed0a4c62" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.xIHfygKCBQEUg3td_O8McAHaDw&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_knowledgechannel.mpd",
+        "clearKey": { "0f856fa0412b11edb8780242ac120002": "783374273ef97ad3bc992c1d63e091e7" }
+      },
+      {
+        "name": "",
+        "logo": "https://bilyonaryo.com/wp-content/uploads/2022/08/bilyonaryo-logo-fb.png",
+        "manifestUri": "https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/bilyonaryoch.mpd",
+        "clearKey": { "227ffaf09bec4a889e0e0988704d52a2": "b2d0dce5c486891997c1c92ddaca2cd2" }
+      },
+      {
+        "name": "",
+        "logo": "https://th.bing.com/th/id/OIP.G8YBbUw6uv-8dyC-d7s3-gHaHa?rs=1&pid=ImgDetMain",
+        "manifestUri": "https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/cg_tvnpre.mpd",
+        "clearKey": { "e1bde543e8a140b38d3f84ace746553e": "b712c4ec307300043333a6899a402c10" }
+      },
+      {
+        "name": "",
+        "logo": "https://th.bing.com/th/id/OIP.y25wVML21jm7uL92XwV3DwHaF1?rs=1&pid=ImgDetMain",
+        "manifestUri": "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/cg_uaap_cplay_sd.mpd",
+        "clearKey": { "95588338ee37423e99358a6d431324b9": "6e0f50a12f36599a55073868f814e81e" }
+      },
+      {
+        "name": "",
+        "logo": "https://cms.dmpcdn.com/livetv/2020/11/20/92242c30-2b34-11eb-8c49-6ff1aae212a5_original.png",
+        "manifestUri": "https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cg_pbarush_hd1.mpd",
+        "clearKey": { "76dc29dd87a244aeab9e8b7c5da1e5f3": "95b2f2ffd4e14073620506213b62ac82" }
+      },
+      {
+        "name": "",
+        "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/NBA_TV.svg/1200px-NBA_TV.svg.png",
+        "manifestUri": "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/pl_nba.mpd",
+        "clearKey": { "f36eed9e95f140fabbc88a08abbeafff": "0125600d0eb13359c28bdab4a2ebe75a" }
+      },
+      {
+        "name": "",
+        "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/OneSportsPlus_logo.svg/300px-OneSportsPluslogo.svg.png",
+        "manifestUri": "https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cg_onesportsplus_hd1.mpd",
+        "clearKey": { "322d06e9326f4753a7ec0908030c13d8": "1e3e0ca32d421fbfec86feced0efefda" }
+      },
+       {
+        "name": "",
+        "logo": "https://th.bing.com/th/id/OIP.BFw-wd22jsRV1KUAG0CbmQHaFu?rs=1&pid=ImgDetMain",
+        "manifestUri": "https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/oneph_sd.mpd",
+        "clearKey": { "92834ab4a7e1499b90886c5d49220e46": "a7108d9a6cfcc1b7939eb111daf09ab3" }
+      },
+       {
+        "name": "",
+        "logo": "https://th.bing.com/th/id/OIP.lCbzkTieFISnFkOVNECqHgHaFJ?rs=1&pid=ImgDetMain",
+        "manifestUri": "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_onesports_hd.mpd",
+        "clearKey": { "53c3bf2eba574f639aa21f2d4409ff11": "3de28411cf08a64ea935b9578f6d0edd" }
+      },
+       {
+        "name": "",
+        "logo": "https://play-lh.googleusercontent.com/wygD_Dlr6orZBJLW2TmQv1WIQkQxrDcTsQbF5JtN7rFgc-ELLkvPmdxmowK5cwUyWw",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_taptv_sd.mpd",
+        "clearKey": { "f6804251e90b4966889b7df94fdc621e": "55c3c014f2bd12d6bd62349658f24566" }
+      },
+       {
+        "name": "",
+        "logo": "https://yt3.ggpht.com/-TlpMWJAqYHc/AAAAAAAAAAI/AAAAAAAAAAA/HYhmyrnj0SQ/s900-c-k-no-mo-rj-c0xffffff/photo.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_kbsworld.mpd",
+        "clearKey": { "22ff2347107e4871aa423bea9c2bd363": "c6e7ba2f48b3a3b8269e8bc360e60404" }
+      },
+       {
+        "name": "",
+        "logo": "https://cms.cignal.tv/Upload/Images/kix%20hd%20(On%20White).png",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/kix_hd1.mpd",
+        "clearKey": { "a8d5712967cd495ca80fdc425bc61d6b": "f248c29525ed4c40cc39baeee9634735" }
+      },
+       {
+        "name": "",
+        "logo": "https://cms.cignal.tv/Upload/Thumbnails/Tap-Action-Flix-Highlight-Thumbnail-Feb-2022.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/cg_tapactionflix_hd1.mpd",
+        "clearKey": { "bee1066160c0424696d9bf99ca0645e3": "f5b72bf3b89b9848de5616f37de040b7" }
+      },
+       {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.DWOAT50nzkKBnuJsxXNH5AHaEo&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_discovery.mpd",
+        "clearKey": { "d9ac48f5131641a789328257e778ad3a": "b6e67c37239901980c6e37e0607ceee6" }
+      },
+      {
+        "name": "",
+        "logo": "https://cropper.watch.aetnd.com/cdn.watch.aetnd.com/sites/5/2020/04/new-lifetime-generic-logo-art-desktop.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_lifetime.mpd",
+        "clearKey": { "cf861d26e7834166807c324d57df5119": "64a81e30f6e5b7547e3516bbf8c647d0" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse4.mm.bing.net/th?id=OIP.P9h3o39tc9EkrdXQ4PSzWQHaHa&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/travel_channel_sd.mpd",
+        "clearKey": { "f3047fc13d454dacb6db4207ee79d3d3": "bdbd38748f51fc26932e96c9a2020839" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse1.mm.bing.net/th?id=OIP.uAeGSiTCaOnk6gTuzR2t0gHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_crime_invest.mpd",
+        "clearKey": { "21e2843b561c4248b8ea487986a16d33": "db6bb638ccdfc1ad1a3e98d728486801" }
+      },
+      {
+        "name": "",
+        "logo": "https://i.ytimg.com/vi/WRwHveXhgMA/maxresdefault.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_historyhd.mpd",
+        "clearKey": { "a7724b7ca2604c33bb2e963a0319968a": "6f97e3e2eb2bade626e0281ec01d3675" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse1.mm.bing.net/th?id=OIP.08d6maH0WPePii1D1AQt7gHaHa&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/cg_animal_planet_sd.mpd",
+        "clearKey": { "436b69f987924fcbbc06d40a69c2799a": "c63d5b0d7e52335b61aeba4f6537d54d" }
+      },
+      {
+        "name": "",
+        "logo": "https://yt3.ggpht.com/a/AATXAJy1C8c3pOmn9lAsPovaRcKqIvw2OAAfHK-HtA=s900-c-k-c0xffffffff-no-rj-mo",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/cg_tvnmovie.mpd",
+        "clearKey": { "2e53f8d8a5e94bca8f9a1e16ce67df33": "3471b2464b5c7b033a03bb8307d9fa35" }
+      },
+      {
+        "name": "",
+        "logo": "https://2.bp.blogspot.com/-JGsBKDJTcvo/XIHEvk4-_AI/AAAAAAAArxY/3Lf4bD_9gzkrGEqo04NaTcfr9SyyX6lGwCLcBGAs/s1600/2.jpg",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/ibc13_sd.mpd",
+        "clearKey": { "04e292bc99bd4ccba89e778651914254": "ff0a62bdf8920ce453fe680330b563a5" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse1.mm.bing.net/th?id=OIP.eMBESWvU7I1p_vYDFbtIVAHaGI&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockextreme.mpd",
+        "clearKey": { "0f852fb8412b11edb8780242ac120002": "4cbc004d8c444f9f996db42059ce8178" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.2M-d9K4S_VA_uPISnmA0oQHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/dr_rockentertainment.mpd",
+        "clearKey": { "e4ee0cf8ca9746f99af402ca6eed8dc7": "be2a096403346bc1d0bb0f812822bb62" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.BbiuJ63fj0Y2_o9YaUEnaQHaEK&pid=Api&P=0&h=180g",
+        "manifestUri": "https://ac-003.live.p7s1video.net/4a37da02/t_003/dazn-rise-hd/cenc-default.mpd",
+        "clearKey": { "75508caa27239cd34ca45ee862f1bbf2": "d38f9f2b690bad3fcc838013242cc5e4 " }
+      },
+      {
+        "name": "",
+        "logo": "https://logos-world.net/wp-content/uploads/2021/08/Cartoon-Network-Logo.png",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_cartoonnetworkhd.mpd",
+        "clearKey": { "a2d1f552ff9541558b3296b5a932136b": "cdd48fa884dc0c3a3f85aeebca13d444" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse4.mm.bing.net/th?id=OIP.3fVgdgoxaiJvOn4SRSdXJAHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_historyhd.mpd",
+        "clearKey": { "a7724b7ca2604c33bb2e963a0319968a": "6f97e3e2eb2bade626e0281ec01d3675" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.ZNHY9L300qTig53_iQqUcQHaDc&pid=Api&P=0&h=180",
+        "manifestUri": "https://fta1-cdn-flr.visionplus.id/out/v1/dc63bd198bc44193b570e0567ff5b22c/index.mpd",
+        "clearKey": { "b4a7b3289eff493d8700becf2e2a1157": "bfbcfcb8137dd565a7f4b5ce7800c1f0" }
+      },
+      {
+        "name": "",
+        "logo": "https://aphrodite.gmanetwork.com/international/international_og_image.jpg",
+        "manifestUri": "https://amg01006-abs-cbn-abscbn-gma-x7-dash-abscbnono-dzsx9.amagi.tv/index.mpd",
+        "clearKey": { "c95ed4c44b0b4f7fa1c6ebbbbaab21a1": "47635b8e885e19f2ccbdff078c207058" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.LCA0S0E6pYTyOv6TvPdXWQHaD4&pid=Api&P=0&h=180",
+        "manifestUri": "https://du44jtt5g7upx.cloudfront.net/out/v1/a3b708325c1d43dc9549c262526a6945/index.mpd",
+        "clearKey": { "9c700e42ffc64d9b82d94cf57a2302fa": "44d038e1fdcaefb3e75ffb4e42537279" }
+      },
+      {
+        "name": "",
+        "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/5/54/TMC_logo.svg/1200px-TMC_logo.svg.png",
+        "manifestUri": "https://qp-pldt-live-grp-07-prod.akamaized.net/out/u/cg_tagalogmovie.mpd",
+        "clearKey": { "96701d297d1241e492d41c397631d857": "ca2931211c1a261f082a3a2c4fd9f91b" }
+      },
+      {
+        "name": "",
+        "logo": "https://sa.kapamilya.com/absnews/abscbnnews/media/abs-cbnnews/a_images/graphics/logos/20121026_cinema-one-global.jpg",
+        "manifestUri": "https://d9rpesrrg1bdi.cloudfront.net/out/v1/93b9db7b231d45f28f64f29b86dc6c65/index.mpd",
+        "clearKey": { "58d0e56991194043b8fb82feb4db7276": "d68f41b59649676788889e19fb10d22c" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.Ejog4JPFqdwur3qYcs9t1gAAAA&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/dr_tapsports.mpd",
+        "clearKey": { "eabd2d95c89e42f2b0b0b40ce4179ea0": "0e7e35a07e2c12822316c0dc4873903f" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse3.mm.bing.net/th?id=OIP.Ejog4JPFqdwur3qYcs9t1gAAAA&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_tapedge.mpd",
+        "clearKey": { "4553f7e8011f411fb625cefc39274300": "98f2f1d153367e84b5d559dc9dfb9a35" }
+      },
+      {
+        "name": "",
+        "logo": "https://tse2.mm.bing.net/th?id=OIP.efiu6AYCSN0-KlcTWMY9awHaEK&pid=Api&P=0&h=180",
+        "manifestUri": "https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/dr_tapedge.mpd",
+        "clearKey": { "4553f7e8011f411fb625cefc39274300": "98f2f1d153367e84b5d559dc9dfb9a35" }
+      }
+]

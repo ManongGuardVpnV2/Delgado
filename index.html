@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AGNSA Cable TV</title>
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.3.5/dist/shaka-player.compiled.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-image: url('https://wallpapers.com/images/hd/hacking-background-mmhim5v56nm98n6i.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .rainbow-text {
+      background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4s linear infinite;
+      background-size: 400% auto;
+    }
+
+    @keyframes shine {
+      0% { background-position: 0% }
+      100% { background-position: 100% }
+    }
+
+    .neon-text {
+      text-shadow: 0 0 6px #0ff, 0 0 12px #0ff, 0 0 16px #0ff;
+    }
+
+    .channel.active .flip-front {
+      box-shadow: 0 0 8px 3px #0ff, 0 0 15px #0ff;
+      outline: 2px solid #0ff;
+      outline-offset: 2px;
+    }
+
+    .flip-card {
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flip-inner {
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card.flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-front, .flip-back {
+      backface-visibility: hidden;
+    }
+
+    .flip-back {
+      transform: rotateY(180deg);
+      background: #000;
+    }
+
+    #channelList::-webkit-scrollbar {
+      height: 6px;
+    }
+
+    #channelList::-webkit-scrollbar-thumb {
+      background: #0ff;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body class="text-white font-sans min-h-screen overflow-x-hidden bg-black bg-opacity-50">
+
+  <!-- Header and Time -->
+  <header class="text-center py-4 text-3xl font-bold rainbow-text">AGNSA Cable TV</header>
+  <div class="text-center mb-4">
+    <span id="datetime" class="text-lg sm:text-xl font-semibold rainbow-text font-mono"></span>
+  </div>
+
+  <!-- Video Player -->
+  <div class="relative max-w-4xl mx-auto px-4 mt-2 pb-40">
+    <div id="videoContainer" class="aspect-video bg-black rounded-xl overflow-hidden shadow-xl relative cursor-pointer">
+      <video id="video" class="w-full h-full object-contain" autoplay playsinline preload="auto"></video>
+
+      <div id="channelName" class="absolute top-2 left-2 bg-black/60 text-cyan-300 font-bold text-sm px-3 py-1 rounded shadow-md z-10"></div>
+
+      <!-- Controls -->
+      <div id="videoControls" class="absolute bottom-0 left-0 right-0 bg-black/60 px-4 py-2 flex flex-wrap items-center justify-between z-10 transition-opacity duration-500 opacity-100 gap-2">
+        <div class="flex items-center gap-2">
+          <button id="playPauseBtn" class="text-cyan-400 hover:text-cyan-300 text-xl">⏸️</button>
+          <input type="range" id="seekBar" value="0" min="0" max="100" step="1" class="w-32 sm:w-48 accent-cyan-400" />
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="range" id="volumeSlider" min="0" max="1" step="0.01" class="w-20 sm:w-28 accent-cyan-400" />
+          <select id="qualitySelector" class="bg-black border border-cyan-400 text-cyan-300 rounded px-2 py-1 text-sm"></select>
+          <button id="fullscreenBtn" class="text-cyan-400 hover:text-cyan-300 text-xl">⛶</button>
+          <button id="pipBtn" class="text-cyan-400 hover:text-cyan-300 text-xl">🗔</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Channel List -->
+  <div class="fixed bottom-0 left-0 right-0 bg-black/80 px-4 py-3 z-10">
+    <div id="channelList" class="flex overflow-x-auto gap-4 py-2 px-1 scroll-smooth"></div>
+  </div>
+
+  <script>
+    const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/5cc1dba0f794828e2d60aaa031489499/raw/channels.json';
+    const player = new shaka.Player(document.getElementById('video'));
+    let channels = [], savedQualityId = 'auto';
+
+    const video = document.getElementById('video');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const seekBar = document.getElementById('seekBar');
+    const pipBtn = document.getElementById('pipBtn');
+    const qualitySelector = document.getElementById('qualitySelector');
+    const videoControls = document.getElementById('videoControls');
+    const videoContainer = document.getElementById('videoContainer');
+
+    player.configure({
+      abr: { enabled: true },
+      streaming: {
+        bufferingGoal: 1,
+        rebufferingGoal: 0.5,
+        bufferBehind: 5,
+        lowLatencyMode: true,
+        startAtSegmentBoundary: true,
+        jumpLargeGaps: true,
+        alwaysStreamText: false,
+        ignoreTextStreamFailures: true
+      }
+    });
+
+    async function loadChannels() {
+      try {
+        const response = await fetch(CHANNEL_JSON_URL);
+        channels = await response.json();
+        renderChannels();
+        if (channels.length) flipChannel(document.querySelectorAll('.channel')[0], 0);
+      } catch (error) {
+        console.error('Failed to load channels:', error);
+        alert('Failed to load channels.');
+      }
+    }
+
+    function renderChannels() {
+      const container = document.getElementById('channelList');
+      container.innerHTML = '';
+      channels.forEach((channel, index) => {
+        const div = document.createElement('div');
+        div.className = 'channel flip-card text-center flex-shrink-0 w-20 min-w-[5rem]';
+        div.onclick = () => flipChannel(div, index);
+        div.innerHTML = `
+          <div class="flip-inner w-full h-full relative">
+            <div class="flip-front aspect-square w-full rounded-full overflow-hidden shadow-lg">
+              <img src="${channel.logo}" alt="${channel.name}" class="w-full h-full object-cover rounded-full" />
+            </div>
+            <div class="flip-back aspect-square absolute inset-0 rounded-full flex items-center justify-center text-[10px] font-bold text-white neon-text">NOW<br>PLAYING</div>
+          </div>
+          <p class="mt-1 text-xs font-bold text-cyan-300 truncate max-w-[5rem]">${channel.name}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function flipChannel(card, index) {
+      document.querySelectorAll('.channel').forEach(el => el.classList.remove('active', 'flipped'));
+      card.classList.add('active', 'flipped');
+      card.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+
+      const channel = channels[index];
+      document.getElementById('channelName').textContent = channel.name;
+
+      player.configure({ drm: { clearKeys: channel.clearKey } });
+      await player.load(channel.manifestUri);
+      updateQualityOptions();
+      if (savedQualityId !== 'auto') {
+        const track = player.getVariantTracks().find(t => t.id == savedQualityId);
+        if (track) {
+          player.configure({ abr: { enabled: false } });
+          player.selectVariantTrack(track, true);
+        }
+      }
+    }
+
+    function updateQualityOptions() {
+      const tracks = player.getVariantTracks();
+      qualitySelector.innerHTML = '';
+      const autoOption = document.createElement('option');
+      autoOption.value = 'auto';
+      autoOption.textContent = 'Auto';
+      qualitySelector.appendChild(autoOption);
+
+      tracks.forEach(track => {
+        const option = document.createElement('option');
+        option.value = track.id;
+        option.textContent = `${track.height}p @ ${(track.bandwidth / 1000).toFixed(0)} kbps`;
+        if (track.id == savedQualityId) option.selected = true;
+        qualitySelector.appendChild(option);
+      });
+    }
+
+    qualitySelector.onchange = () => {
+      savedQualityId = qualitySelector.value;
+      if (savedQualityId === 'auto') {
+        player.configure({ abr: { enabled: true } });
+      } else {
+        const track = player.getVariantTracks().find(t => t.id == savedQualityId);
+        if (track) {
+          player.configure({ abr: { enabled: false } });
+          player.selectVariantTrack(track, true);
+        }
+      }
+    };
+
+    playPauseBtn.onclick = () => {
+      if (video.paused) {
+        video.play();
+        playPauseBtn.textContent = '⏸️';
+      } else {
+        video.pause();
+        playPauseBtn.textContent = '▶️';
+      }
+    };
+
+    volumeSlider.value = video.volume;
+    volumeSlider.oninput = () => video.volume = volumeSlider.value;
+
+    fullscreenBtn.onclick = () => {
+      if (!document.fullscreenElement) videoContainer.requestFullscreen().catch(console.error);
+      else document.exitFullscreen().catch(console.error);
+    };
+
+    pipBtn.onclick = () => {
+      if (document.pictureInPictureElement) document.exitPictureInPicture();
+      else video.requestPictureInPicture();
+    };
+
+    video.addEventListener('timeupdate', () => {
+      seekBar.value = (100 / video.duration) * video.currentTime;
+    });
+
+    seekBar.addEventListener('input', () => {
+      video.currentTime = video.duration * (seekBar.value / 100);
+    });
+
+    videoContainer.addEventListener('click', () => playPauseBtn.click());
+
+    let controlTimeout;
+    videoContainer.addEventListener('mousemove', () => {
+      clearTimeout(controlTimeout);
+      videoControls.classList.remove('opacity-0');
+      controlTimeout = setTimeout(() => videoControls.classList.add('opacity-0'), 3000);
+    });
+
+    function updateDateTime() {
+      const now = new Date();
+      document.getElementById('datetime').textContent = now.toLocaleString('en-US', {
+        weekday: 'short', day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true, timeZoneName: 'short'
+      }).replace(',', ' –');
+    }
+
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+    loadChannels();
+  </script>
+</body>
+</html>
