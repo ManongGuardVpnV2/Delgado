@@ -72,7 +72,7 @@
 </head>
 <body class="text-white font-sans min-h-screen overflow-x-hidden bg-black bg-opacity-50">
 
-  <!-- Header and Time -->
+  <!-- Header -->
   <header class="text-center py-4 text-3xl font-bold rainbow-text">AGNSA Cable TV</header>
   <div class="text-center mb-4">
     <span id="datetime" class="text-lg sm:text-xl font-semibold rainbow-text font-mono"></span>
@@ -85,7 +85,6 @@
 
       <div id="channelName" class="absolute top-2 left-2 bg-black/60 text-cyan-300 font-bold text-sm px-3 py-1 rounded shadow-md z-10"></div>
 
-      <!-- Controls -->
       <div id="videoControls" class="absolute bottom-0 left-0 right-0 bg-black/60 px-4 py-2 flex flex-wrap items-center justify-between z-10 transition-opacity duration-500 opacity-100 gap-2">
         <div class="flex items-center gap-2">
           <button id="playPauseBtn" class="text-cyan-400 hover:text-cyan-300 text-xl">⏸️</button>
@@ -107,8 +106,8 @@
   </div>
 
   <script>
-const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/5cc1dba0f794828e2d60aaa031489499/raw/4d91621f36fcdae75d9ceeb7673a51c0ab1d7afb/channels.json';
-';
+    const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/5cc1dba0f794828e2d60aaa031489499/raw/4d91621f36fcdae75d9ceeb7673a51c0ab1d7afb/channels.json';
+
     const player = new shaka.Player(document.getElementById('video'));
     let channels = [], savedQualityId = 'auto';
 
@@ -176,7 +175,7 @@ const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/5c
       const channel = channels[index];
       document.getElementById('channelName').textContent = channel.name;
 
-      player.configure({ drm: { clearKeys: channel.clearKey } });
+      player.configure({ drm: { clearKeys: channel.clearKey || {} } });
       await player.load(channel.manifestUri);
       updateQualityOptions();
       if (savedQualityId !== 'auto') {
@@ -242,6 +241,7 @@ const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/5c
     };
 
     video.addEventListener('timeupdate', () => {
+      if (!video.duration) return;
       seekBar.value = (100 / video.duration) * video.currentTime;
     });
 
