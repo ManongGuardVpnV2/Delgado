@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -116,7 +117,7 @@ body::-webkit-scrollbar {
     }
     .pulse-text { animation: pulse 2s infinite; }
     .neon-text { text-shadow: 0 0 6px rgb(255, 204, 0), 0 0 12px rgb(11, 222, 32); }
-    .channel.active .flip-front { box-shadow: 0 0 8px 3px #0ff; outline: 2px solid #0ff; }
+    .channel.active .flip-front { box-shadow: 0 0 8px 3px #0ff; outline: 2px solid rgb(111, 255, 0); }
     .flip-card { perspective: 1000px; cursor: pointer; }
     .flip-inner { transition: transform 0.6s; transform-style: preserve-3d; }
     .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
@@ -176,10 +177,6 @@ input[type="range"] {
 #settingsDropdown {
   z-index: 9999;
 }
-
-
-
-
 
   </style>
   <style>
@@ -246,7 +243,6 @@ input[type="range"] {
   <div id="settingsDropdown"
     class="hidden absolute right-0 bottom-10 bg-black bg-opacity-80 text-sm rounded-lg p-2 space-y-1 z-50 shadow-lg">
     <button id="pipToggle" class="block w-full text-left hover:text-cyan-300">🗔 PiP</button>
-    <button id="subtitleToggle" class="block w-full text-left hover:text-cyan-300">🔤 Subtitles</button>
     <div id="qualityOptions" class="space-y-1 mt-2">
   <label class="block text-cyan-400 font-bold mb-1">📺 Quality</label>
   <select id="qualitySelect" class="w-full bg-black border border-cyan-500 text-white px-2 py-1 rounded">
@@ -335,13 +331,14 @@ document.addEventListener('click', (e) => {
   preferredVideoCodecs: ['avc1.640028', 'vp9']
 });
 window.hls = new Hls({
-  maxBufferLength: 5,           // seconds
+  autoStartLoad: true,
+  capLevelToPlayerSize: true,
+  maxBufferLength: 5,
   maxMaxBufferLength: 10,
   liveSyncDuration: 2,
-  liveMaxLatencyDuration: 4,
-  maxBufferHole: 0.1,
-  lowLatencyMode: true,         // low-latency live
-  enableWorker: true
+  liveMaxLatencyDuration: 5,
+  lowLatencyMode: true
+  
 });
 
 
@@ -462,17 +459,28 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
   try {
     if (channel.url && channel.url.endsWith('.m3u8')) {
       // HLS stream
-      if (Hls.isSupported()) {
-        window.hls = new Hls({
-          maxBufferLength: 5,
-          liveSyncDuration: 2,
-          liveMaxLatencyDuration: 5,
-          lowLatencyMode: true,
+       if (Hls.isSupported()) {
+  if (window.hls) window.hls.destroy(); // destroy previous instance
+
+  window.hls = new Hls({
+    lowLatencyMode: true,
+    backBufferLength: 30, // max keep-back
+    maxBufferLength: 10, // cap total buffer
+    maxMaxBufferLength: 20,
+    liveSyncDuration: 2,
+    liveMaxLatencyDuration: 5,
+    maxBufferHole: 0.5,
+    enableWorker: true, // offload processing
+    startPosition: -1 // play from live edge
         });
-        window.hls.loadSource(channel.url);
-        window.hls.attachMedia(video);
-        window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play().catch(e => console.error('Playback error:', e));
+          window.hls.loadSource(channel.url);
+          window.hls.attachMedia(video);
+          window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+          video.play().catch(console.warn);
+          window.hls.currentLevel = -1; // -1 = auto
+          video.play();
+
+        
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
         // Native HLS
@@ -486,6 +494,19 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       player.configure({ drm: { clearKeys: channel.clearKey || {} } });
       await player.load(channel.manifestUri);
       if (channel.manifestUri && channel.manifestUri.endsWith('.mpd')) {
+        player.configure({
+  abr: {
+    enabled: true,
+    defaultBandwidthEstimate: 5000000  // Start assuming 5Mbps; adjust if needed
+  },
+  streaming: {
+    bufferingGoal: 4,
+    rebufferingGoal: 1,
+    fastSwitchEnabled: true,
+    startAtSegmentBoundary: true
+  }
+});
+
   qualitySelect.classList.remove('hidden');
   qualitySelect.innerHTML = `<option value="auto">Auto</option>`;
 
@@ -704,21 +725,6 @@ document.getElementById('pipToggle').onclick = async () => {
     }
   } catch (err) {
     console.warn('PiP failed:', err);
-  }
-};
-
-// Toggle subtitles
-let subtitlesEnabled = false;
-document.getElementById('subtitleToggle').onclick = () => {
-  subtitlesEnabled = !subtitlesEnabled;
-  const toggleText = subtitlesEnabled ? '📝 Subtitles: ON' : '📝 Subtitles: OFF';
-  document.getElementById('subtitleToggle').textContent = toggleText;
-
-  const textTracks = player.getTextTracks();
-  player.setTextTrackVisibility(subtitlesEnabled);
-
-  if (subtitlesEnabled && textTracks.length > 0) {
-    player.selectTextTrack(textTracks[0]);
   }
 };
 
