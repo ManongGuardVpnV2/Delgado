@@ -5,9 +5,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AGNSA Cable TV</title>
-  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.3.5/dist/shaka-player.compiled.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.5.1/dist/shaka-player.compiled.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.0/dist/hls.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.0"></script>
+
+
+  
+
+
   <style>
     body {
       background-image: url('https://wallpapers.com/images/hd/hacking-background-mmhim5v56nm98n6i.jpg');
@@ -245,7 +253,7 @@ input[type="range"] {
     <button id="pipToggle" class="block w-full text-left hover:text-cyan-300">🗔 PiP</button>
     <div id="qualityOptions" class="space-y-1 mt-2">
   <label class="block text-cyan-400 font-bold mb-1">📺 Quality</label>
-  <select id="qualitySelect" class="w-full bg-black border border-cyan-500 text-white px-2 py-1 rounded">
+  <select id="qualitySelect" class="hidden"></select>
     <option value="auto">Auto</option>
   </select>
 </div>
@@ -271,7 +279,7 @@ input[type="range"] {
   
 
   <script>
-    const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/3bf72c4b0f2ddd44bf433102548ca8b4/raw/2d27271011dd3e56841f8dc91645a337eabc0133/categorychannel.json';
+    const CHANNEL_JSON_URL = 'https://gist.githubusercontent.com/ManongGuardVpnV2/3bf72c4b0f2ddd44bf433102548ca8b4/raw/32e21270e6020e053f557eeacd79206b5bb0f578/categorychannel.json';
 
    const player = new shaka.Player(document.getElementById('video'));
     const video = document.getElementById('video');
@@ -291,19 +299,6 @@ input[type="range"] {
           preloadVideo.preload = 'auto';
           preloadVideo.muted = true;
           preloadVideo.play().then(() => preloadVideo.pause());
-          const widevineChannels = [
-  {
-    name: "Widevine Demo",
-    category: "Widevine",
-    logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Widevine_Logo.png/320px-Widevine_Logo.png",
-    manifestUri: "http://143.44.136.110:6910/001/2/ch00000090990000001248/manifest.mpd?virtualDomain=001.live_hls.zte.com",
-    drm: {
-      widevine: "http://143.44.136.74:9443/widevine/?deviceId=02:00:00:00:00:00"
-    }
-  }
-];
-
-
 
           let dropdownVisible = false;
 
@@ -355,10 +350,29 @@ window.hls = new Hls({
 
 
     async function loadChannels() {
-      const res = await fetch(CHANNEL_JSON_URL);
-      channels = await res.json();
-      renderChannelRows();
-      renderWidevineChannelList();
+  try {
+    const res = await fetch(CHANNEL_JSON_URL);
+    channels = await res.json();
+
+    renderChannelRows();
+    renderWidevineChannelList?.(); // If you use it
+
+    // Auto-load the first channel
+    const firstCard = document.querySelector('.channel');
+if (firstCard) {
+  const index = parseInt(firstCard.dataset.index);
+  flipChannel(firstCard, index);
+}
+  } catch (err) {
+    console.error("❌ Failed to load channels:", err);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+  shaka.polyfill.installAll();
+  player.addEventListener('error', e => console.error('Shaka error:', e.detail));
+  loadChannels(); // Load and auto-play first channel
+});
+
       const first = document.querySelector('.channel');
       if (first) flipChannel(first, parseInt(first.dataset.index));
       player.addEventListener('trackschanged', () => {
@@ -396,7 +410,6 @@ window.hls = new Hls({
 });
 
       
-    }
 
     function renderChannelRows() {
       const container = document.getElementById('channelCategories');
@@ -448,167 +461,120 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       });
     }
 
-    async function flipChannel(card, index) {
-  // Highlight selected channel
-  document.querySelectorAll('.channel').forEach(el => el.classList.remove('active', 'flipped'));
-  card.classList.add('active', 'flipped');
-  card.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-  if (channel.drm?.widevine) {
-  player.configure({
-    drm: {
-      servers: {
-        'com.widevine.alpha': channel.drm.widevine
-      }
-    }
-  });
-}
-
-
+   async function flipChannel(card, index) {
   const channel = channels[index];
+  if (!channel) return;
+
+  console.log('Switching to', channel.name);
+
+  // Highlight active channel
+  document.querySelectorAll('.channel').forEach(el =>
+    el.classList.remove('active', 'flipped')
+  );
+  card.classList.add('active', 'flipped');
   document.getElementById('channelName').textContent = channel.name;
 
+  // Save last channel
+  localStorage.setItem('lastChannelIndex', index);
 
-  // Cleanup before switching
-  try {
-    if (window.hls) {
-      window.hls.destroy();
-      window.hls = null;
-    }
-    await player.unload();
-  } catch (e) {
-    console.warn('Cleanup failed', e);
+  // Stop current playback
+  video.pause();
+  video.removeAttribute('src');
+  video.load();
+
+  // Destroy HLS.js if running
+  if (window.hls) {
+    window.hls.destroy();
+    window.hls = null;
   }
 
-  try {
-    if (channel.url && channel.url.endsWith('.m3u8')) {
-      // HLS stream
-       if (Hls.isSupported()) {
-  if (window.hls) window.hls.destroy(); // destroy previous instance
+  // Unload Shaka manifest
+  await player.unload();
 
-  window.hls = new Hls({
-    lowLatencyMode: true,
-    backBufferLength: 30, // max keep-back
-    maxBufferLength: 10, // cap total buffer
-    maxMaxBufferLength: 20,
-    liveSyncDuration: 2,
-    liveMaxLatencyDuration: 5,
-    maxBufferHole: 0.5,
-    enableWorker: true, // offload processing
-    startPosition: -1 // play from live edge
-        });
-          window.hls.loadSource(channel.url);
-          window.hls.attachMedia(video);
-          window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-          video.play().catch(console.warn);
-          window.hls.currentLevel = -1; // -1 = auto
-          video.play();
-
-        
-        });
-      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        // Native HLS
-        video.src = channel.url;
-        video.play().catch(e => console.error('Native HLS playback error:', e));
-      } else {
-        alert('Your browser does not support HLS.');
-      }
-    } else if (channel.manifestUri) {
-      // MPEG-DASH (Shaka Player)
-      player.configure({ drm: { clearKeys: channel.clearKey || {} } });
-      await player.load(channel.manifestUri);
-      if (channel.manifestUri && channel.manifestUri.endsWith('.mpd')) {
+  // 🟢 DASH (.mpd) playback via Shaka
+  if (channel.manifestUri && channel.manifestUri.endsWith('.mpd')) {
+    try {
+      // Set ClearKey if needed
+      if (channel.clearKey) {
         player.configure({
-  abr: {
-    enabled: true,
-    defaultBandwidthEstimate: 5000000  // Start assuming 5Mbps; adjust if needed
-  },
-  streaming: {
-    bufferingGoal: 4,
-    rebufferingGoal: 1,
-    fastSwitchEnabled: true,
-    startAtSegmentBoundary: true
-  }
-});
-
-  qualitySelect.classList.remove('hidden');
-  qualitySelect.innerHTML = `<option value="auto">Auto</option>`;
-
-  const tracks = player.getVariantTracks().sort((a, b) => a.height - b.height);
-  const added = new Set();
-
-  tracks.forEach(track => {
-    const label = `${track.height}p`;
-    if (!added.has(label)) {
-      const option = document.createElement('option');
-      option.value = track.id;
-      option.textContent = label;
-      qualitySelect.appendChild(option);
-      added.add(label);
-    }
-  });
-
-  qualitySelect.onchange = () => {
-    const selected = qualitySelect.value;
-    if (selected === 'auto') {
-      player.configure({ abr: { enabled: true } });
-    } else {
-      const chosenTrack = tracks.find(t => t.id == selected);
-      if (chosenTrack) {
-        player.configure({ abr: { enabled: false } });
-        player.selectVariantTrack(chosenTrack, true);
+          drm: {
+            clearKeys: channel.clearKey
+          }
+        });
+      } else {
+        player.configure({ drm: { clearKeys: {} } });
       }
+
+      // Performance tuning
+      player.configure({
+        abr: { enabled: true },
+        streaming: {
+          bufferingGoal: 2,
+          rebufferingGoal: 0.5,
+          jumpLargeGaps: true,
+          lowLatencyMode: true,
+          startAtSegmentBoundary: true
+        }
+      });
+
+      await player.load(channel.manifestUri);
+      await video.play();
+      console.log('✅ Playing DASH:', channel.name);
+      return;
+
+    } catch (err) {
+      console.error('❌ DASH load/play failed:', err);
+      setTimeout(() => video.play().catch(() => {}), 100);
     }
-  };
+  }
 
-} else {
-  qualitySelect.classList.add('hidden');
-}
+  // 🔵 HLS (.m3u8) playback via HLS.js or native
+  if (channel.url && channel.url.endsWith('.m3u8')) {
+    console.log('🎥 Loading HLS:', channel.name);
 
+    if (Hls.isSupported()) {
+      window.hls = new Hls({
+        autoStartLoad: true,
+        enableWorker: true,
+        lowLatencyMode: true,
+        maxBufferLength: 5,
+        maxMaxBufferLength: 10,
+        liveSyncDurationCount: 3,
+        liveMaxLatencyDurationCount: 5,
+        backBufferLength: 0
+      });
 
-      video.play().catch(e => console.error('Playback error:', e));
+      window.hls.attachMedia(video);
+      window.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+        window.hls.loadSource(channel.url);
+      });
+
+      window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.play().catch(err => {
+          console.warn("HLS play failed:", err);
+          setTimeout(() => video.play().catch(() => {}), 100);
+        });
+      });
+
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      // Native Safari/iOS fallback
+      video.src = channel.url;
+      video.addEventListener('loadedmetadata', () => {
+        video.play().catch(err => {
+          console.warn("Native HLS play failed:", err);
+          setTimeout(() => video.play().catch(() => {}), 100);
+        });
+      });
     } else {
-  console.warn('No valid stream URL found for this channel.');
-}
-  } catch (error) {
-  console.error('❌ Channel load error:', error.message);
-}
+      alert('HLS is not supported in this browser.');
     }
 
+    return;
+  }
 
-    function renderWidevineChannelList() {
-  const widevineContainer = document.getElementById('widevineChannelList');
-  widevineContainer.innerHTML = '';
-
-  widevineChannels.forEach((channel, i) => {
-    const indexInGlobal = channels.length + i; // TEMP index (after main list)
-
-    const card = document.createElement('div');
-    card.className = 'channel flip-card text-center flex-shrink-0 w-24 min-w-[6rem] cursor-pointer';
-    card.dataset.index = indexInGlobal;
-
-    card.innerHTML = `
-      <div class="flip-inner w-full h-full relative">
-        <div class="flip-front aspect-square w-full rounded-full overflow-hidden shadow-lg">
-          <img src="${channel.logo}" alt="${channel.name}" class="w-full h-full object-cover rounded-full" />
-        </div>
-        <div class="flip-back aspect-square absolute inset-0 rounded-full flex items-center justify-center text-[10px] font-bold text-white neon-text">NOW<br>PLAYING</div>
-      </div>
-      <p class="mt-1 text-xs font-bold text-cyan-300 max-w-[6rem] break-words whitespace-normal text-center neon-text leading-tight">${channel.name}</p>
-    `;
-
-    card.onclick = () => {
-      // Inject into global channel list temporarily
-      channels[indexInGlobal] = widevineChannels[i];
-      flipChannel(card, indexInGlobal);
-    };
-
-    widevineContainer.appendChild(card);
-  });
+  console.warn('❌ No valid URL for channel:', channel.name);
 }
 
-    
-
-  
     volumeSlider.value = video.volume;
     volumeSlider.oninput = () => video.volume = volumeSlider.value;
     const volumeIcon = document.getElementById('volumeIcon');
@@ -667,6 +633,8 @@ fullscreenBtn.onclick = () => {
     }
     document.exitFullscreen();
   }
+  console.log('Loading channel:', channel.name, channel.url || channel.manifestUri);
+
 
   
 
