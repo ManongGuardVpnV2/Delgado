@@ -354,6 +354,7 @@ document.addEventListener('click', (e) => {
 });
 
     let channels = [];
+    
 
     player.configure({
       abr: { enabled: true },
@@ -507,71 +508,68 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       });
     }
 
-  async function flipChannel(card, index) {
+  let currentChannelIndex = -1; // Track currently playing index
+let currentFormat = ''; // 'dash' or 'hls'
+
+async function flipChannel(card, index) {
+  if (index === currentChannelIndex) return; // Don't reload same channel
+  currentChannelIndex = index;
+
   const channel = channels[index];
   if (!channel) return;
 
-  console.log('⏩ Switching to', channel.name);
+  console.log('🎬 Switching to', channel.name);
 
-  // Highlight selected
-  document.querySelectorAll('.channel').forEach(el => el.classList.remove('active', 'flipped'));
+  // Update UI
+  document.querySelectorAll('.channel').forEach(el =>
+    el.classList.remove('active', 'flipped')
+  );
   card.classList.add('active', 'flipped');
   document.getElementById('channelName').textContent = channel.name;
+
+  // Save to localStorage
   localStorage.setItem('lastChannelIndex', index);
 
-  // Prevent flash or slow reloads
-  if (!video.paused) video.pause();
-  video.removeAttribute('src');
-
-  // Unmute on channel click
+  // Always unmute
   video.muted = false;
 
-  // Clear old HLS if any
-  if (window.hls) {
-    try {
-      window.hls.destroy();
-    } catch (e) {}
-    window.hls = null;
-  }
-
-  // Clear Shaka before switching
-  try {
-    await player.unload();
-  } catch (e) {
-    console.warn('Shaka unload failed:', e);
-  }
-
-  // DASH (.mpd) playback
+  // DASH Stream
   if (channel.manifestUri?.endsWith('.mpd')) {
+    if (currentFormat === 'hls' && window.hls) {
+      window.hls.destroy();
+      window.hls = null;
+    }
+
     try {
+      await player.unload();
+
       player.configure({
-        drm: {
-          clearKeys: channel.clearKey || {},
-        },
+        drm: { clearKeys: channel.clearKey || {} },
         abr: { enabled: true },
         streaming: {
           bufferingGoal: 2,
           rebufferingGoal: 0.5,
-          jumpLargeGaps: true,
           lowLatencyMode: true,
-          startAtSegmentBoundary: true,
+          startAtSegmentBoundary: true
         }
       });
 
       await player.load(channel.manifestUri);
+      video.muted = false;
       await video.play();
-      console.log('✅ Playing DASH:', channel.name);
+      currentFormat = 'dash';
+      console.log('✅ DASH playing:', channel.name);
     } catch (err) {
-      console.error('❌ DASH failed:', err);
+      console.error('❌ DASH error:', err);
     }
     return;
   }
 
-  // HLS (.m3u8) playback
+  // HLS Stream
   if (channel.url?.endsWith('.m3u8')) {
-    console.log('🎥 Loading HLS:', channel.name);
+    await player.unload(); // Unload Shaka if was used
 
-    if (Hls.isSupported()) {
+     if (Hls.isSupported()) {
       window.hls = new Hls({
         enableWorker: true,
         autoStartLoad: true,
@@ -588,18 +586,23 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       });
 
       window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        video.muted = false;
         video.play().catch(err => {
-          console.warn("HLS play failed:", err);
+          console.warn('HLS play error:', err);
         });
       });
 
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // iOS / Safari fallback
-      video.src = channel.url;
-      video.addEventListener('loadedmetadata', () => {
-        video.play().catch(() => {});
-      });
+      
+
+      currentFormat = 'hls';
+      console.log('✅ HLS playing:', channel.name);
     } else {
+      // Native Safari fallback
+      video.src = channel.url;
+      video.muted = false;
+      video.addEventListener('loadedmetadata', () => {
+        video.play().catch(err => console.warn('Native HLS fail:', err));
+      });
       alert('❌ HLS not supported in this browser');
     }
     return;
@@ -607,6 +610,7 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
 
   console.warn('❌ Unsupported channel format:', channel.name);
 }
+
 
 
 
