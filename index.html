@@ -8,9 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.5.1/dist/shaka-player.compiled.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.0/dist/hls.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.0"></script>
 
 
   
@@ -509,84 +507,79 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       });
     }
 
-   async function flipChannel(card, index) {
+  async function flipChannel(card, index) {
   const channel = channels[index];
   if (!channel) return;
 
-  console.log('Switching to', channel.name);
+  console.log('⏩ Switching to', channel.name);
 
-  // Highlight active channel
-  document.querySelectorAll('.channel').forEach(el =>
-    el.classList.remove('active', 'flipped')
-  );
+  // Highlight selected
+  document.querySelectorAll('.channel').forEach(el => el.classList.remove('active', 'flipped'));
   card.classList.add('active', 'flipped');
   document.getElementById('channelName').textContent = channel.name;
-
-  // Save last channel
   localStorage.setItem('lastChannelIndex', index);
 
-  // Reset video
-  video.pause();
+  // Prevent flash or slow reloads
+  if (!video.paused) video.pause();
   video.removeAttribute('src');
-  video.load();
 
-  // Unmute
+  // Unmute on channel click
   video.muted = false;
 
-  // Destroy previous HLS instance if any
+  // Clear old HLS if any
   if (window.hls) {
-    window.hls.destroy();
+    try {
+      window.hls.destroy();
+    } catch (e) {}
     window.hls = null;
   }
 
-  // Unload previous Shaka stream
-  await player.unload();
+  // Clear Shaka before switching
+  try {
+    await player.unload();
+  } catch (e) {
+    console.warn('Shaka unload failed:', e);
+  }
 
-  // DASH playback (.mpd)
-  if (channel.manifestUri && channel.manifestUri.endsWith('.mpd')) {
+  // DASH (.mpd) playback
+  if (channel.manifestUri?.endsWith('.mpd')) {
     try {
-      if (channel.clearKey) {
-        player.configure({ drm: { clearKeys: channel.clearKey } });
-      } else {
-        player.configure({ drm: { clearKeys: {} } });
-      }
-
       player.configure({
-        abr: { enabled: true }, // Auto-quality
+        drm: {
+          clearKeys: channel.clearKey || {},
+        },
+        abr: { enabled: true },
         streaming: {
           bufferingGoal: 2,
           rebufferingGoal: 0.5,
           jumpLargeGaps: true,
           lowLatencyMode: true,
-          startAtSegmentBoundary: true
+          startAtSegmentBoundary: true,
         }
       });
 
       await player.load(channel.manifestUri);
-      video.muted = false;
       await video.play();
       console.log('✅ Playing DASH:', channel.name);
-      return;
     } catch (err) {
       console.error('❌ DASH failed:', err);
-      setTimeout(() => video.play().catch(() => {}), 100);
     }
+    return;
   }
 
-  // HLS playback (.m3u8)
-  if (channel.url && channel.url.endsWith('.m3u8')) {
+  // HLS (.m3u8) playback
+  if (channel.url?.endsWith('.m3u8')) {
     console.log('🎥 Loading HLS:', channel.name);
 
     if (Hls.isSupported()) {
       window.hls = new Hls({
-        autoStartLoad: true,
         enableWorker: true,
+        autoStartLoad: true,
         lowLatencyMode: true,
         maxBufferLength: 5,
         maxMaxBufferLength: 10,
         liveSyncDurationCount: 3,
         liveMaxLatencyDurationCount: 5,
-        backBufferLength: 0
       });
 
       window.hls.attachMedia(video);
@@ -595,30 +588,24 @@ const neonClass = neonClassMap[cat] || 'neon-blue';
       });
 
       window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        video.muted = false;
         video.play().catch(err => {
           console.warn("HLS play failed:", err);
-          setTimeout(() => video.play().catch(() => {}), 100);
         });
       });
 
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-      // Native iOS/Safari fallback
+      // iOS / Safari fallback
       video.src = channel.url;
-      video.muted = false;
       video.addEventListener('loadedmetadata', () => {
-        video.play().catch(err => {
-          console.warn("Native HLS play failed:", err);
-          setTimeout(() => video.play().catch(() => {}), 100);
-        });
+        video.play().catch(() => {});
       });
     } else {
-      alert('❌ HLS is not supported in this browser.');
+      alert('❌ HLS not supported in this browser');
     }
     return;
   }
 
-  console.warn('❌ No valid stream found:', channel.name);
+  console.warn('❌ Unsupported channel format:', channel.name);
 }
 
 
