@@ -68,7 +68,7 @@ body::-webkit-scrollbar {
     0 0 10px rgb(7, 214, 214);
 }
 .rainbow-btn {
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+  background: linear-gradient(90deg, red, orange, rgb(245, 37, 231), green, blue, indigo, rgb(81, 0, 81));
   background-size: 400% 400%;
   animation: rainbowShift 3s linear infinite;
   color: white;
@@ -84,24 +84,7 @@ body::-webkit-scrollbar {
   0% { background-position: 0% 50%; }
   100% { background-position: 100% 50%; }
 }
-.rainbow-btn {
-  background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
-  background-size: 300% 300%;
-  animation: rainbowShift 4s linear infinite;
-  color: white;
-  border: none;
-  box-shadow: 0 0 8px #0ff, 0 0 15px rgba(255, 255, 255, 0.2);
-  transition: transform 0.2s ease-in-out;
-}
-.rainbow-btn:hover {
-  transform: scale(1.1);
-}
-
-@keyframes rainbowShift {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 100% 50%; }
-}
-   .rainbow-text {
+  .rainbow-text {
       background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -224,8 +207,8 @@ input[type="range"] {
 
   </style>
   <style>
-  .neon-red   { color: #ff4d4d; text-shadow: 0 0 6px #ff4d4d, 0 0 12px #ff4d4d, 0 0 16px #ff4d4d; }
-.neon-cyan { color: #00e1ff; text-shadow: 0 0 6px #00e1ff, 0 0 12px #00e1ff, 0 0 16px #00e1ff; }
+  .neon-red   { color: #ff0606; text-shadow: 0 0 6px #4de705, 0 0 12px #f8f809, 0 0 16px #03f7ff; }
+.neon-cyan { color: #00e1ff; text-shadow: 0 0 6px #000000, 0 0 12px #21fca1, 0 0 16px #00e1ff; }
 .neon-green { color: #00ff99; text-shadow: 0 0 6px #00ff99, 0 0 12px #00ff99, 0 0 16px #00ff99; }
 .neon-pink  { color: #ff77ff; text-shadow: 0 0 6px #ff77ff, 0 0 12px #ff77ff, 0 0 16px #ff77ff; }
 .neon-yellow { color: #ffff66; text-shadow: 0 0 6px #1b1b01, 0 0 12px #ffff66, 0 0 16px #66ffb5; }
@@ -237,10 +220,10 @@ input[type="range"] {
 </head>
 <body class="text-white font-sans min-h-screen overflow-x-hidden bg-black bg-opacity-50 pb-40">
 
-  <header class="text-center py-4 text-3xl font-bold red">AGNSA Cable TV</header>
+  <header class="text-center py-4 text-3xl font-bold neon-red">AGNSA Cable TV</header>
 
   <div class="text-center mb-4">
-    <span id="datetime" class="text-lg sm:text-xl font-semibold yellow font-mono"></span>
+    <span id="datetime" class="text-lg sm:text-xl font-semibold neon-cyan  font-mono"></span>
   </div>
 
   <audio id="fullscreenSound" src="\assest\exitfullscreen.mp3" preload="auto"></audio>
@@ -256,7 +239,7 @@ input[type="range"] {
   
   <!-- Left side: Play, LIVE, Seekbar -->
   <div class="flex items-center gap-2 w-full sm:w-auto flex-grow">
-    <button id="playPauseBtn" class="bg-green-600 text-xl px-4 py-1 rounded-full">⏸️</button>
+    <button id="playPauseBtn" class="rainbow-btn text-xl px-4 py-1 rounded-full">⏸️</button>
 
     <div id="liveIndicator"
       class="flex items-center gap-1 text-red-500 text-xs font-bold animate-pulse whitespace-nowrap">
