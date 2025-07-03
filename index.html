@@ -5,8 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AGNSA Cable TV</title>
-  <script src="https://cdn.jsdelivr.net/npm/shaka-player@4.5.1/dist/shaka-player.compiled.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/shaka-player.compiled.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.9/shaka-player.compiled.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/hls.js@1.5.0/dist/hls.min.js"></script>
   <script src="https://cdn.tailwindcss.com"></script>
 
@@ -105,18 +104,19 @@ body::-webkit-scrollbar {
       
     }
     .pulse-text { animation: pulse 2s infinite; }
-    .neon-text { text-shadow: 0 0 6px rgb(255, 204, 0), 0 0 12px rgb(11, 222, 32); }
+    .neon-text { text-shadow: 0 0 6px rgb(7, 241, 238), 0 0 12px rgb(222, 11, 11); }
     .channel.active .flip-front { box-shadow: 0 0 8px 3px #0ff; outline: 2px solid rgb(111, 255, 0); }
     .flip-card { perspective: 1000px; cursor: pointer; }
     .flip-inner { transition: transform 0.6s; transform-style: preserve-3d; }
     .flip-card.flipped .flip-inner { transform: rotateY(180deg); }
     .flip-front, .flip-back { backface-visibility: hidden; }
     .flip-back { transform: rotateY(180deg); background: #000; }
-    .scroll-x::-webkit-scrollbar { height: 6px; }
+    .scroll-x::-webkit-scrollbar { height: 7px; }
     .scroll-x::-webkit-scrollbar-thumb {
-      background: rgb(255, 3, 3);
+      background: rgb(171, 3, 255);
       border-radius: 8px;
     }
+    
     .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -131,15 +131,11 @@ body::-webkit-scrollbar {
 .mechanic-icon:hover svg {
   transform: rotate(10deg);
   filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 10px #0ff);
+  animation: spin 1s linear infinite;
 }
 .mechanic-icon svg {
   filter: drop-shadow(0 0 2px #0ff) drop-shadow(0 0 6px #0ff);
   transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.mechanic-icon:hover svg {
-  transform: rotate(15deg);
-  filter: drop-shadow(0 0 4px #0ff) drop-shadow(0 0 10px #0ff);
 }
 
 .spin-gear {
@@ -259,7 +255,9 @@ input[type="range"] {
       z-index: 9999;
       text-align: center;
     }
-        
+    
+      
+
 </style>
 
 </head>
@@ -310,17 +308,17 @@ input[type="range"] {
     class="w-24 sm:w-28 accent-green-400 touch-manipulation" />
 </div>
 <div id="gearWrapper" class="relative">
-  <button id="settingsBtn" class="text-cyan-400 text-xl mechanic-icon">
-    ⚙️
-  </button>
+  <button id="settingsBtn" class="text-cyan-400 text-xl mechanic-icon animate-spin hover:scale-110 transition-transform duration-300">
+  ⚙️
+</button>
   <div id="settingsDropdown"
     class="hidden absolute right-0 bottom-10 bg-black bg-opacity-80 text-sm rounded-lg p-2 space-y-1 z-50 shadow-lg">
     <button id="pipToggle" class="block w-full text-left hover:text-cyan-300">🗔 PiP</button>
     <div id="qualityOptions" class="space-y-1 mt-2">
   <label class="block text-cyan-400 font-bold mb-1">Quality</label>
-  <select id="qualitySelect" class="hidden"></select>
-    <option value="auto">Auto</option>
-  </select>
+  <select id="qualitySelect" class="hidden">
+  <option value="auto">Auto</option>
+</select>
 </div>
   </div>
 </div>
@@ -340,6 +338,7 @@ input[type="range"] {
 </div>
 
   <div id="channelCategories" class="mt-6 space-y-6 px-4"></div>
+  
 
  <div id="devToolsWarning">Developer tools are disabled. Please close them to continue!</div>
 
@@ -347,11 +346,11 @@ input[type="range"] {
         <marquee><h1>Welcome to AGNSA Cable TV</h1></marquee>
     <marquee><p>This is the main content of the page.</p></marquee>
   </div>
-
   <div id="blockedContent">
     <h2>Content Blocked</h2>
     <p>Developer tools have been detected. The content is now blocked.</p>
   </div>
+
 
 
   <script>
@@ -360,6 +359,8 @@ input[type="range"] {
     const video = document.getElementById('video');
     const playPauseBtn = document.getElementById('playPauseBtn');
     const volumeSlider = document.getElementById('volumeSlider');
+    const volumeIcon = document.getElementById('volumeIcon');
+    const volumeSvg = document.getElementById('volumeSvg');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const seekBar = document.getElementById('seekBar');
     const pipBtn = document.getElementById('pipToggle');
@@ -385,53 +386,89 @@ input[type="range"] {
       }
     });
 
-    // Configure Shaka Player
-    player.configure({
-      abr: { enabled: true },
-      streaming: {
-        bufferingGoal: 2,  // Lower buffering goal for faster playback
-        rebufferingGoal: 0.5,  // Quicker rebuffering
-        lowLatencyMode: true, // Enable low latency
-        startAtSegmentBoundary: true,
-        smallGapLimit: 0.5, // Skip small gaps for smoother playback
-        jumpLargeGaps: true,
-      },
-      preferredVideoCodecs: ['avc1.640028', 'vp9'],
-    });
+   // Shaka Player config
+player.configure({
+  abr: { enabled: true },
+  streaming: {
+    bufferingGoal: 15,      // seconds of buffer to keep ahead
+    rebufferingGoal: 5,     // seconds of buffer to resume after stall
+    lowLatencyMode: false,  // set true if really want low latency but may cause stutter
+    startAtSegmentBoundary: true,
+    smallGapLimit: 0.5,
+    jumpLargeGaps: true,
+  },
+  preferredVideoCodecs: ['avc1.640028', 'vp9'],
+});
 
-    // HLS.js Configuration
-    window.hls = new Hls({
-      autoStartLoad: true,
-      capLevelToPlayerSize: true,
-      maxBufferLength: 5,
-      maxMaxBufferLength: 10,
-      liveSyncDuration: 2,  // Sync faster with live streams
-      liveMaxLatencyDuration: 5,
-      lowLatencyMode: true,  // Enable low latency for HLS
-    });
+// HLS.js config
+window.hls = new Hls({
+  enableWorker: true,
+  autoStartLoad: true,
+  maxBufferLength: 30,
+  maxMaxBufferLength: 60,
+  liveSyncDuration: 3,
+  liveMaxLatencyDuration: 15,
+  lowLatencyMode: false,  // try false for smoother buffering
+});
+
 
     // Fetch channels
     async function loadChannels() {
-      try {
-        const res = await fetch(CHANNEL_JSON_URL);
-        channels = await res.json();
-        renderChannelRows();
+  try {
+    const res = await fetch(CHANNEL_JSON_URL);
+    channels = await res.json();
+    renderChannelRows();
 
-        // Auto-load first channel
-        const firstCard = document.querySelector('.channel');
-        if (firstCard) {
-          const index = parseInt(firstCard.dataset.index);
-          flipChannel(firstCard, index);
-        }
-      } catch (err) {
-        console.error("❌ Failed to load channels:", err);
+    // Load saved or first channel AFTER channels are loaded
+    const savedIndex = parseInt(localStorage.getItem('lastChannelIndex'));
+    if (!isNaN(savedIndex) && channels[savedIndex]) {
+      const card = document.querySelector(`.channel[data-index="${savedIndex}"]`);
+      if (card) {
+        flipChannel(card, savedIndex);
+        return;
       }
     }
+    // fallback to first channel
+    const firstCard = document.querySelector('.channel');
+    if (firstCard) flipChannel(firstCard, 0);
+  } catch (err) {
+    console.error("❌ Failed to load channels:", err);
+  }
+}
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       shaka.polyfill.installAll();
       player.addEventListener('error', e => console.error('Shaka error:', e.detail));
       loadChannels();
+
+      // Load saved volume
+const savedVolume = parseFloat(localStorage.getItem('savedVolume'));
+if (!isNaN(savedVolume)) {
+  video.volume = savedVolume;
+  video.muted = savedVolume === 0;
+  volumeSlider.value = savedVolume;
+  updateVolumeIcon();
+} else {
+  // Default volume if no saved volume
+  video.volume = 1;
+  video.muted = false;
+  volumeSlider.value = 1;
+}
+
+
+
+      const savedIndex = parseInt(localStorage.getItem('lastChannelIndex'));
+if (!isNaN(savedIndex) && channels[savedIndex]) {
+  const card = document.querySelector(`.channel[data-index="${savedIndex}"]`);
+  if (card) flipChannel(card, savedIndex);
+} else {
+  // Fallback load first channel
+  const firstCard = document.querySelector('.channel');
+  if (firstCard) {
+    flipChannel(firstCard, 0);
+  }
+}
+
     });
 
     // Render Channel List
@@ -494,6 +531,7 @@ input[type="range"] {
 
       console.log('🎬 Switching to', channel.name);
 
+
       // Update UI
       document.querySelectorAll('.channel').forEach(el =>
         el.classList.remove('active', 'flipped')
@@ -515,96 +553,143 @@ input[type="range"] {
         }
 
         try {
-          await player.unload();
-          player.configure({
-            drm: { clearKeys: channel.clearKey || {} },
-            abr: { enabled: true },
-            streaming: {
-              bufferingGoal: 2,
-              rebufferingGoal: 0.5,
-              lowLatencyMode: true,
-              startAtSegmentBoundary: true
-            }
-          });
-          await player.load(channel.manifestUri);
-          video.muted = false;
-          await video.play();
-          currentFormat = 'dash';
-          console.log('✅ DASH playing:', channel.name);
-        } catch (err) {
-          console.error('❌ DASH error:', err);
-        }
-        return;
-      }
+  await player.unload();
+  player.configure({
+    drm: { clearKeys: channel.clearKey || {} },
+    abr: { enabled: true },
+    streaming: {
+      bufferingGoal: 15,        // buffer 15 seconds ahead for smoothness
+      rebufferingGoal: 5,       // 5 seconds buffer to resume after stall
+      lowLatencyMode: false,    // set true if ultra-low latency needed, may cause stutter
+      startAtSegmentBoundary: true,
+      smallGapLimit: 0.5,
+      jumpLargeGaps: true,
+    },
+    preferredVideoCodecs: ['avc1.640028', 'vp9'], // top-level config
+  });
+  await player.load(channel.manifestUri);
+  video.muted = false;
+  await video.play();
+  currentFormat = 'dash';
+  console.log('✅ DASH playing:', channel.name);
+} catch (err) {
+  console.error('❌ DASH error:', err);
+}
+return;
+}
 
-      // HLS Stream
-      if (channel.url?.endsWith('.m3u8')) {
-        await player.unload(); // Unload Shaka if was used
+// HLS Stream
+if (channel.url?.endsWith('.m3u8')) {
+  await player.unload(); // Unload Shaka if was used
 
-        if (Hls.isSupported()) {
-          window.hls = new Hls({
-            enableWorker: true,
-            autoStartLoad: true,
-            lowLatencyMode: true,
-            maxBufferLength: 5,
-            maxMaxBufferLength: 10,
-            liveSyncDurationCount: 3,
-            liveMaxLatencyDurationCount: 5,
-          });
+  if (Hls.isSupported()) {
+    if (window.hls) {
+      window.hls.destroy();
+      window.hls = null;
+    }
 
-          window.hls.attachMedia(video);
-          window.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-            window.hls.loadSource(channel.url);
-          });
+    window.hls = new Hls({
+      enableWorker: true,
+      autoStartLoad: true,
+      lowLatencyMode: false,       // set false for stable buffering, or true for very low latency
+      maxBufferLength: 30,         // buffer 30 seconds ahead
+      maxMaxBufferLength: 60,      // max buffer length 60 seconds
+      liveSyncDuration: 3,         // sync live latency ~3 seconds
+      liveMaxLatencyDuration: 15,  // max latency allowed 15 seconds
+      backBufferLength: 30,        // keep 30 seconds of back buffer for smooth rewind
+      maxFragLookUpTolerance: 0.25,
+    });
 
-          window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
-            video.muted = false;
-            video.play().catch(err => console.warn('HLS play error:', err));
-          });
+    window.hls.attachMedia(video);
+    window.hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+      window.hls.loadSource(channel.url);
+    });
 
-          currentFormat = 'hls';
-          console.log('✅ HLS playing:', channel.name);
-        } else {
-          // Native Safari fallback
-          video.src = channel.url;
-          video.muted = false;
-          video.addEventListener('loadedmetadata', () => {
-            video.play().catch(err => console.warn('Native HLS fail:', err));
-          });
-          alert('❌ HLS not supported in this browser');
-        }
-        return;
-      }
+    window.hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      video.muted = false;
+      video.play().catch(err => console.warn('HLS play error:', err));
+    });
 
+    currentFormat = 'hls';
+    console.log('✅ HLS playing:', channel.name);
+  } else {
+    // Native Safari fallback
+    video.src = channel.url;
+    video.muted = false;
+    video.addEventListener('loadedmetadata', () => {
+      video.play().catch(err => console.warn('Native HLS fail:', err));
+    });
+    alert('❌ HLS not supported in this browser');
+  }
+  return;
+}
       console.warn('❌ Unsupported channel format:', channel.name);
     }
 
-    // Volume and Mute functionality
-    volumeSlider.value = video.volume;
-    volumeSlider.oninput = () => {
-      video.volume = volumeSlider.value;
-      video.muted = video.volume === 0;
-      updateVolumeIcon();
-    };
+
+    // Apply saved or default volume
+const savedVolume = parseFloat(localStorage.getItem('volume'));
+volumeSlider.addEventListener('input', () => {
+  const vol = parseFloat(volumeSlider.value);
+  video.volume = Math.min(Math.max(vol, 0), 1);
+  video.muted = vol === 0;
+  localStorage.setItem('savedVolume', video.volume); // 🔒 Save volume
+  updateVolumeIcon();
+});
+
+
+
+
+    document.getElementById('volumeIcon').addEventListener('click', () => {
+    video.muted = !video.muted;
+    if (video.muted) {
+    volumeSlider.value = 0;
+  } else {
+    const savedVolume = parseFloat(localStorage.getItem('volume')) || 0.5;
+    video.volume = savedVolume;
+    volumeSlider.value = savedVolume;
+  }
+  updateVolumeIcon();
+});
+
+
 
     function updateVolumeIcon() {
-      const volumeSvg = document.getElementById('volumeSvg');
-      if (video.muted || video.volume === 0) {
-        volumeSvg.innerHTML = `
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9L15 15M15 9L9 15M11 5L6 9H3v6h3l5 4V5" />
-        `;
-      } else if (video.volume < 0.5) {
-        volumeSvg.innerHTML = `
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5L6 9H3v6h3l5 4V5m4.5 6a3 3 0 000-6" />
-        `;
-      } else {
-        volumeSvg.innerHTML = `
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5L6 9H3v6h3l5 4V5m4.5 1.5a6 6 0 010 11m2-13a9 9 0 010 17" />
-        `;
+  const volumeSvg = document.getElementById('volumeSvg');
+  if (video.muted || video.volume === 0) {
+    volumeSvg.innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M9 9L15 15M15 9L9 15M11 5L6 9H3v6h3l5 4V5" />
+    `;
+  } else if (video.volume < 0.5) {
+    volumeSvg.innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M11 5L6 9H3v6h3l5 4V5m4 4a3 3 0 000 6" />
+    `;
+  } else {
+    volumeSvg.innerHTML = `
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        d="M11 5L6 9H3v6h3l5 4V5m4.5 1.5a6 6 0 010 11m2-13a9 9 0 010 17" />
+    `;
+  }
+}
+
+
+
+      function updateActiveChannel(catIndex, chIndex) {
+      // Clear previous active
+      document.querySelectorAll('.channel').forEach(btn => btn.classList.remove('active'));
+      // Set active channel button by category and index
+      const category = document.getElementById('channelCategories').children[catIndex];
+      if (!category) return;
+      const grid = category.querySelector('div');
+      if (!grid) return;
+      const btns = grid.children;
+      for (let i = 0; i < btns.length; i++) {
+        btns[i].classList.remove('active');
       }
+      btns[chIndex].classList.add('active');
     }
-
-
 
     // Function to toggle play and pause
     function togglePlayPause() {
@@ -703,8 +788,10 @@ input[type="range"] {
     });
 
     seekBar.addEventListener('input', () => {
-      video.currentTime = video.duration * (seekBar.value / 100);
-    });
+  if (seekBar.disabled) return;  // no seeking on live
+  video.currentTime = video.duration * (seekBar.value / 100);
+});
+
 
     // Controls visibility on mouse move
     let controlTimeout;
@@ -747,7 +834,7 @@ input[type="range"] {
 
         // Only show dev tools warning if we're not in emulation mode
         if (widthChange && !devToolsOpen && !isEmulationMode) {
-          let devToolsOpen = false;
+          devToolsOpen = true;
           document.getElementById('devToolsWarning').style.display = 'block';  // Show warning
           document.getElementById('mainContent').style.display = 'none'; // Hide main content
           document.getElementById('blockedContent').style.display = 'block'; // Show blocked content
@@ -799,6 +886,9 @@ input[type="range"] {
     setInterval(updateDateTime, 1000);
     updateDateTime();
     loadChannels();
+
+
+
   </script>
   
 
